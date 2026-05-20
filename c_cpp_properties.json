@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "ESP32-S3",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/.pio/libdeps/esp32s3usbotg/**",
+                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/cores/esp32",
+                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/variants/esp32s3",
+                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/**",
+                "C:/Users/bless/.platformio/packages/toolchain-xtensa-esp32s3/xtensa-esp32s3-elf/include/c++/11.2.0",
+                "C:/Users/bless/.platformio/packages/toolchain-xtensa-esp32s3/lib/gcc/xtensa-esp32s3-elf/11.2.0/include"
+            ],
+            "compilerPath": "C:/Users/bless/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compileCommands": "${workspaceFolder}/.pio/build/esp32s3usbotg/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
