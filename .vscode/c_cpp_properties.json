@@ -10,6 +10,8 @@
             "includePath": [
                 "C:/Users/bless/OneDrive/Documents/PlatformIO/Projects/SmartCleanerPro2/include",
                 "C:/Users/bless/OneDrive/Documents/PlatformIO/Projects/SmartCleanerPro2/src",
+                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
+                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
@@ -223,7 +225,6 @@
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
-                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -240,7 +241,6 @@
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
-                "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                 "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                 ""
@@ -250,6 +250,8 @@
                 "path": [
                     "C:/Users/bless/OneDrive/Documents/PlatformIO/Projects/SmartCleanerPro2/include",
                     "C:/Users/bless/OneDrive/Documents/PlatformIO/Projects/SmartCleanerPro2/src",
+                    "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
+                    "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPClient/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
@@ -463,7 +465,6 @@
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/ESPmDNS/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FFat/src",
-                    "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/FS/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdate/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/HTTPUpdateServer/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/I2S/src",
@@ -480,7 +481,6 @@
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/USB/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
-                    "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/WiFiProv/src",
                     "C:/Users/bless/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
                     ""
