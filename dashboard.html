@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Smart Cleaner Pro - Robot Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Smart Cleaner Pro - Production Dashboard v6.0</title>
     <style>
         * {
             margin: 0;
@@ -11,11 +14,17 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            position: relative;
         }
 
         .container {
@@ -33,66 +42,73 @@
             font-size: 2.5rem;
             color: white;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
         }
 
         .header p {
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.85);
             font-size: 1rem;
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
         }
 
         .stat-card {
-            background: white;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, background 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
         }
 
         .stat-icon {
             font-size: 2.5rem;
             margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
-            color: #333;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .stat-label {
             font-size: 0.85rem;
-            color: #666;
+            color: rgba(255,255,255,0.7);
             margin-top: 5px;
         }
 
         /* Main Grid */
         .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
 
         /* Cards */
         .card {
-            background: white;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
         .card-header {
@@ -101,18 +117,19 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .card-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #333;
+            color: white;
         }
 
         .card-badge {
-            background: #10B981;
-            color: white;
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #10B981;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -129,52 +146,67 @@
         .sensor-item {
             text-align: center;
             padding: 15px;
-            background: #f8f9fa;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .sensor-item:hover {
+            background: rgba(255,255,255,0.08);
         }
 
         .sensor-label {
             font-size: 0.8rem;
-            color: #666;
+            color: rgba(255,255,255,0.7);
             margin-bottom: 5px;
         }
 
         .sensor-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #333;
+            color: white;
         }
 
         .sensor-unit {
             font-size: 0.8rem;
-            color: #999;
+            color: rgba(255,255,255,0.7);
         }
 
-        /* Battery Bar */
-        .battery-container {
-            margin: 15px 0;
+        /* Camera Status Box */
+        .camera-status {
+            padding: 12px;
+            background: rgba(139,92,246,0.12);
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 12px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
         }
 
-        .battery-bar {
-            height: 30px;
-            background: #e5e7eb;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 10px 0;
+        .camera-status.active {
+            background: rgba(16,185,129,0.12);
+            border-color: rgba(16,185,129,0.3);
         }
 
-        .battery-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10B981, #059669);
-            border-radius: 15px;
-            transition: width 0.5s ease;
+        .camera-status.error {
+            background: rgba(239,68,68,0.12);
+            border-color: rgba(239,68,68,0.3);
+        }
+
+        .camera-metric {
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            color: white;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .camera-metric span:first-child {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .camera-metric span:last-child {
             font-weight: bold;
-            font-size: 0.8rem;
+            color: white;
         }
 
         /* Command Buttons */
@@ -193,44 +225,57 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: #f0f0f0;
-            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .cmd-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
         .cmd-btn:active {
             transform: scale(0.95);
         }
 
-        .cmd-forward { background: #10B981; color: white; }
-        .cmd-backward { background: #F59E0B; color: white; }
-        .cmd-left { background: #3B82F6; color: white; }
-        .cmd-right { background: #3B82F6; color: white; }
-        .cmd-stop { background: #EF4444; color: white; }
-        .cmd-auto { background: #8B5CF6; color: white; }
-        .cmd-manual { background: #6B7280; color: white; }
-        .cmd-charge { background: #06B6D4; color: white; }
-
-        /* Logs */
-        .logs-container {
-            max-height: 300px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
+        .cmd-forward { 
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #10B981;
         }
-
-        .log-entry {
-            padding: 8px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #555;
+        .cmd-backward { 
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.3);
+            color: #F59E0B;
         }
-
-        .log-time {
-            color: #999;
-            margin-right: 10px;
+        .cmd-left { 
+            background: rgba(59,130,246,0.12);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: #3B82F6;
+        }
+        .cmd-right { 
+            background: rgba(59,130,246,0.12);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: #3B82F6;
+        }
+        .cmd-stop { 
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #EF4444;
+        }
+        .cmd-auto { 
+            background: rgba(139,92,246,0.12);
+            border: 1px solid rgba(139,92,246,0.3);
+            color: #8B5CF6;
+        }
+        .cmd-manual { 
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.85);
+        }
+        .cmd-charge { 
+            background: rgba(6,182,212,0.12);
+            border: 1px solid rgba(6,182,212,0.3);
+            color: #06B6D4;
         }
 
         /* Status Indicator */
@@ -247,29 +292,129 @@
             animation: pulse 2s infinite;
         }
 
-        .status-dot.online { background: #10B981; }
-        .status-dot.offline { background: #EF4444; }
-        .status-dot.cleaning { background: #3B82F6; }
+        .status-dot.online { 
+            background: #10B981;
+            box-shadow: 0 0 8px rgba(16,185,129,0.5);
+        }
+        .status-dot.offline { 
+            background: #EF4444;
+            box-shadow: 0 0 8px rgba(239,68,68,0.5);
+        }
+        .status-dot.cleaning { 
+            background: #3B82F6;
+            box-shadow: 0 0 8px rgba(59,130,246,0.5);
+        }
+        .status-dot.processing { 
+            background: #F59E0B;
+            box-shadow: 0 0 8px rgba(245,158,11,0.5);
+        }
 
         @keyframes pulse {
             0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+            50% { opacity: 0.7; transform: scale(1.1); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .command-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
+        /* Alert */
+        .alert {
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.3);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .alert-title {
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 5px;
+        }
+
+        .alert-text {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+        }
+
+        .alert.success {
+            background: rgba(16,185,129,0.12);
+            border-color: rgba(16,185,129,0.3);
+        }
+
+        .alert.success .alert-title {
+            color: #10B981;
+        }
+
+        .alert.danger {
+            background: rgba(239,68,68,0.12);
+            border-color: rgba(239,68,68,0.3);
+        }
+
+        .alert.danger .alert-title {
+            color: #EF4444;
+        }
+
+        .alert.info {
+            background: rgba(139,92,246,0.12);
+            border-color: rgba(139,92,246,0.3);
+        }
+
+        .alert.info .alert-title {
+            color: #8B5CF6;
+        }
+
+        /* Connection Status Banner */
+        .connection-banner {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.3);
+            color: #EF4444;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .connection-banner.show {
+            display: block;
+        }
+
+        /* Logs */
+        .logs-container {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+        }
+
+        .logs-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .logs-container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+        }
+
+        .logs-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        .logs-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .log-entry {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.85);
+        }
+
+        .log-time {
+            color: rgba(255,255,255,0.7);
+            margin-right: 10px;
         }
 
         /* Footer */
@@ -281,18 +426,331 @@
             font-size: 0.8rem;
         }
 
-        /* Alert */
-        .alert {
-            background: #FEF3C7;
-            border-left: 4px solid #F59E0B;
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 15px;
+        .footer p {
+            margin: 5px 0;
         }
 
-        .alert-title {
-            font-weight: bold;
-            color: #92400E;
+        #ipAddress {
+            color: rgba(255,255,255,0.85);
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        #ipAddress:hover {
+            color: white;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN - ALL SCREEN SIZES
+           ======================================== */
+
+        /* Extra Small Devices (Phones, <576px) */
+        @media (max-width: 575px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-icon {
+                font-size: 2rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .sensor-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .sensor-value {
+                font-size: 1.2rem;
+            }
+
+            .command-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .cmd-btn {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+
+            .logs-container {
+                max-height: 200px;
+                font-size: 0.75rem;
+            }
+
+            .alert {
+                padding: 10px;
+            }
+
+            .alert-title {
+                font-size: 0.9rem;
+            }
+
+            .footer {
+                font-size: 0.7rem;
+                padding: 15px;
+            }
+        }
+
+        /* Small Devices (Large Phones, 576px - 767px) */
+        @media (min-width: 576px) and (max-width: 767px) {
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .sensor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .command-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Medium Devices (Tablets, 768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            body {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 15px;
+            }
+
+            .main-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .sensor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .command-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Large Devices (Desktops, 992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .stats-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Extra Large Devices (Large Desktops, 1200px+) */
+        @media (min-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Ultra Wide Screens (1600px+) */
+        @media (min-width: 1600px) {
+            .container {
+                max-width: 1600px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .header h1 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Landscape Phone Orientation */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                margin-bottom: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                display: none; /* Hide on short landscape screens */
+            }
+
+            .main-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .logs-container {
+                max-height: 150px;
+            }
+        }
+
+        /* Touch Device Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .cmd-btn {
+                min-height: 44px; /* Apple's touch target size */
+                min-width: 44px;
+            }
+
+            .sensor-item {
+                min-height: 44px;
+            }
+
+            #ipAddress {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .cmd-btn,
+            .connection-banner {
+                display: none;
+            }
+
+            .card {
+                break-inside: avoid;
+            }
+        }
+
+        /* Glass effect enhancement */
+        .card::before,
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0) 100%);
+            pointer-events: none;
+        }
+
+        .card, .stat-card {
+            position: relative;
+        }
+
+        /* Smooth responsive transitions */
+        .stats-grid,
+        .main-grid,
+        .sensor-grid,
+        .command-grid {
+            transition: all 0.3s ease;
+        }
+
+        /* Container max-width responsive */
+        @media (max-width: 575px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @media (min-width: 576px) {
+            .container {
+                max-width: 540px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                max-width: 960px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1320px;
+            }
         }
     </style>
 </head>
@@ -301,30 +759,40 @@
         <!-- Header -->
         <div class="header">
             <h1>🤖 Smart Cleaner Pro</h1>
-            <p>Real-time Robot Monitoring Dashboard</p>
+            <p>Production Dashboard v6.0 | Static IP: 192.168.1.178</p>
+        </div>
+
+        <!-- Connection Status Banner -->
+        <div class="connection-banner" id="connectionBanner">
+            ⚠️ Connection Lost - Attempting to reconnect to 192.168.1.178...
         </div>
 
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon">🔄</div>
+                <div class="stat-icon">📷</div>
                 <div class="stat-value" id="statFrames">0</div>
-                <div class="stat-label">Frames Processed</div>
+                <div class="stat-label">Frames Captured</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon">📡</div>
-                <div class="stat-value" id="statWifi">0%</div>
-                <div class="stat-label">WiFi Signal</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">☁️</div>
-                <div class="stat-value" id="statCloud">-</div>
-                <div class="stat-label">Cloud Status</div>
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="statFps">0.0</div>
+                <div class="stat-label">Camera FPS</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🧹</div>
                 <div class="stat-value" id="statDirt">0%</div>
                 <div class="stat-label">Dirt Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💡</div>
+                <div class="stat-value" id="statBrightness">0</div>
+                <div class="stat-label">Brightness</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📡</div>
+                <div class="stat-value" id="statWifi">0%</div>
+                <div class="stat-label">WiFi Signal</div>
             </div>
         </div>
 
@@ -335,32 +803,46 @@
                 <div class="card-header">
                     <span class="card-title">🤖 Robot Status</span>
                     <div class="status-indicator">
-                        <div class="status-dot" id="statusDot"></div>
-                        <span id="statusText">-</span>
+                        <div class="status-dot online" id="statusDot"></div>
+                        <span id="statusText" style="color: white;">-</span>
                     </div>
                 </div>
                 
                 <div class="sensor-grid">
                     <div class="sensor-item">
-                        <div class="sensor-label">🔄 Movement</div>
+                        <div class="sensor-label">Movement</div>
                         <div class="sensor-value" id="movement">STOP</div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">⚙️ Mode</div>
+                        <div class="sensor-label">Mode</div>
                         <div class="sensor-value" id="mode">MANUAL</div>
                     </div>
                 </div>
 
-                <div class="battery-container">
-                    <div class="sensor-label">🔋 Battery Level</div>
-                    <div class="battery-bar">
-                        <div class="battery-fill" id="batteryFill" style="width: 0%">0%</div>
+                <!-- Camera Status Box -->
+                <div class="camera-status" id="cameraBox">
+                    <div class="camera-metric">
+                        <span>📷 Camera Status</span>
+                        <span id="camStatus">READY</span>
+                    </div>
+                    <div class="camera-metric">
+                        <span>⚡ Processing Time</span>
+                        <span id="procTime">0ms</span>
+                    </div>
+                    <div class="camera-metric">
+                        <span>🧹 Dirt Detected</span>
+                        <span id="dirtStatus">NO</span>
+                    </div>
+                    <div class="camera-metric">
+                        <span>🔌 USB Connection</span>
+                        <span id="usbStatus">CONNECTED</span>
                     </div>
                 </div>
 
-                <div class="alert" id="dirtAlert" style="display: none;">
+                <!-- Dirt Alert -->
+                <div class="alert danger" id="dirtAlert" style="display: none;">
                     <div class="alert-title">⚠️ Dirt Detected!</div>
-                    <div>Robot has detected dirt. Switching to thorough cleaning mode.</div>
+                    <div class="alert-text">Robot has detected dirt. Switching to thorough cleaning mode.</div>
                 </div>
             </div>
 
@@ -373,26 +855,27 @@
                 
                 <div class="sensor-grid">
                     <div class="sensor-item">
-                        <div class="sensor-label">⬅️ Left Sensor</div>
+                        <div class="sensor-label">⬅️ Left</div>
                         <div class="sensor-value" id="leftSensor">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">➡️ Right Sensor</div>
+                        <div class="sensor-label">➡️ Right</div>
                         <div class="sensor-value" id="rightSensor">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">⬆️ Front Left</div>
+                        <div class="sensor-label">⬆️ Front-L</div>
                         <div class="sensor-value" id="frontLeft">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">⬆️ Front Right</div>
+                        <div class="sensor-label">⬆️ Front-R</div>
                         <div class="sensor-value" id="frontRight">0 <span class="sensor-unit">cm</span></div>
                     </div>
                 </div>
 
-                <div class="alert" id="obstacleAlert" style="display: none; background: #FEE2E2; border-left-color: #EF4444;">
-                    <div class="alert-title" style="color: #991B1B;">⚠️ Obstacle Detected!</div>
-                    <div>Robot detected an obstacle. Adjusting path.</div>
+                <!-- Obstacle Alert -->
+                <div class="alert danger" id="obstacleAlert" style="display: none;">
+                    <div class="alert-title">⚠️ Obstacle Detected!</div>
+                    <div class="alert-text">Robot detected an obstacle nearby. Adjusting path.</div>
                 </div>
             </div>
 
@@ -414,22 +897,22 @@
                     <button class="cmd-btn cmd-charge" onclick="sendCommand('RETURN_CHARGE')">🔋 CHARGE</button>
                 </div>
 
-                <div class="alert" style="background: #EFF6FF; border-left-color: #3B82F6; margin-top: 20px;">
-                    <div class="alert-title" style="color: #1E40AF;">💡 Pro Tip</div>
-                    <div>AUTO mode enables intelligent navigation and dirt detection.</div>
+                <div class="alert info" style="margin-top: 20px;">
+                    <div class="alert-title">💡 USB Camera AI Vision</div>
+                    <div class="alert-text">AUTO mode enables intelligent navigation with real-time dirt detection (65% threshold). DSJ-3808-308 camera captures frames every 3 seconds.</div>
                 </div>
             </div>
 
             <!-- Command Logs Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📝 Command History</span>
-                    <span class="card-badge">Last 20</span>
+                    <span class="card-title">📝 System Logs</span>
+                    <span class="card-badge">Live</span>
                 </div>
                 <div class="logs-container" id="logsContainer">
                     <div class="log-entry">
                         <span class="log-time">--:--:--</span>
-                        Waiting for commands...
+                        Initializing dashboard...
                     </div>
                 </div>
             </div>
@@ -437,31 +920,39 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>Smart Cleaner Pro v2.0 | Real-time Robot Monitoring | Data updates every 3 seconds</p>
+            <p>Smart Cleaner Pro v6.0 PRODUCTION | USB Camera: DSJ-3808-308 | ESP32-S3</p>
+            <p>Static IP: 192.168.1.178 (Never Changes) | Updates every 2 seconds</p>
+            <p id="firmwareInfo">Firmware: <span id="firmwareVersion">v6.0</span> | Click IP to change: <span id="ipAddress">192.168.1.178</span></p>
         </div>
     </div>
 
     <script>
-        // Configuration
-        // Replace with your ESP32-S3 IP address
-        const ESP_IP = window.prompt('Enter ESP32-S3 IP Address:', '192.168.1.100');
-        const API_URL = `http://${ESP_IP}/api/status`;
+        // =====================================================
+        // CONFIGURATION - STATIC IP
+        // =====================================================
+        let ESP_IP = localStorage.getItem('esp32_ip') || '192.168.1.178';  // Default static IP
         
-        let logCounter = 0;
+        const API_STATUS = `http://${ESP_IP}/api/status`;
+        const API_COMMAND = `http://${ESP_IP}/api/command`;
+        const API_CAMERA = `http://${ESP_IP}/api/camera`;
+        
+        let connectionErrors = 0;
+        let lastUpdateTime = Date.now();
 
-        // Send command to robot
+        // =====================================================
+        // COMMAND FUNCTIONS
+        // =====================================================
         async function sendCommand(command) {
             try {
-                const response = await fetch(`http://${ESP_IP}/api/command`, {
+                const response = await fetch(API_COMMAND, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ command: command })
                 });
                 
                 if (response.ok) {
-                    addLog(`📱 Command sent: ${command}`, 'sent');
+                    addLog(`📱 Command sent: ${command}`, 'success');
+                    fetchStatus();
                 } else {
                     addLog(`❌ Command failed: ${command}`, 'error');
                 }
@@ -471,124 +962,182 @@
             }
         }
 
-        // Add log entry
+        // =====================================================
+        // LOGGING SYSTEM
+        // =====================================================
         function addLog(message, type = 'info') {
             const logsContainer = document.getElementById('logsContainer');
             const time = new Date().toLocaleTimeString();
             const logEntry = document.createElement('div');
             logEntry.className = 'log-entry';
             
-            let icon = '';
-            if (type === 'sent') icon = '📱 ';
-            else if (type === 'error') icon = '❌ ';
-            else icon = 'ℹ️ ';
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            else if (type === 'error') icon = '❌';
+            else if (type === 'warning') icon = '⚠️';
             
-            logEntry.innerHTML = `<span class="log-time">${time}</span> ${icon}${message}`;
+            logEntry.innerHTML = `<span class="log-time">${time}</span> ${icon} ${message}`;
             logsContainer.insertBefore(logEntry, logsContainer.firstChild);
             
-            // Keep only last 20 logs
             while (logsContainer.children.length > 20) {
                 logsContainer.removeChild(logsContainer.lastChild);
             }
         }
 
-        // Update dashboard with data
+        // =====================================================
+        // DASHBOARD UPDATE
+        // =====================================================
         function updateDashboard(data) {
-            // Status indicator
+            lastUpdateTime = Date.now();
+            connectionErrors = 0;
+            
+            document.getElementById('connectionBanner').classList.remove('show');
+            
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
             
-            if (data.status === 'CLEANING' || data.status === 'MOVING_FORWARD') {
+            statusText.innerText = data.status || 'IDLE';
+            
+            if (data.status === 'CLEANING' || data.status === 'AUTO_CLEANING') {
                 statusDot.className = 'status-dot cleaning';
-                statusText.innerText = 'Cleaning';
             } else if (data.status === 'IDLE' || data.status === 'STOPPED') {
                 statusDot.className = 'status-dot online';
-                statusText.innerText = 'Idle';
+            } else if (data.camera_status === 'PROCESSING') {
+                statusDot.className = 'status-dot processing';
             } else {
-                statusDot.className = 'status-dot offline';
-                statusText.innerText = 'Offline';
+                statusDot.className = 'status-dot online';
             }
             
-            // Movement and Mode
             document.getElementById('movement').innerText = data.movement || 'STOP';
             document.getElementById('mode').innerText = data.mode || 'MANUAL';
             document.getElementById('modeBadge').innerText = data.mode || 'MANUAL';
             
-            // Sensors
             document.getElementById('leftSensor').innerHTML = `${data.left_sensor || 0} <span class="sensor-unit">cm</span>`;
             document.getElementById('rightSensor').innerHTML = `${data.right_sensor || 0} <span class="sensor-unit">cm</span>`;
             document.getElementById('frontLeft').innerHTML = `${data.front_left_sensor || 0} <span class="sensor-unit">cm</span>`;
             document.getElementById('frontRight').innerHTML = `${data.front_right_sensor || 0} <span class="sensor-unit">cm</span>`;
             
-            // Vision stats
-            document.getElementById('statFrames').innerText = data.vision_frames || 0;
-            document.getElementById('statDirt').innerText = `${data.dust_score || 0}%`;
+            document.getElementById('statFrames').innerText = data.camera_frames || 0;
+            document.getElementById('statFps').innerText = (data.camera_fps || 0).toFixed(1);
+            document.getElementById('statDirt').innerText = `${data.dirt_score || 0}%`;
+            document.getElementById('statBrightness').innerText = data.camera_brightness || 0;
+            document.getElementById('statWifi').innerText = `${data.wifi || 0}%`;
             
-            // Obstacle alert
+            document.getElementById('camStatus').innerText = data.camera_status || 'OFFLINE';
+            document.getElementById('procTime').innerText = `${data.processing_time || 0}ms`;
+            
+            const dirtStatusEl = document.getElementById('dirtStatus');
+            dirtStatusEl.innerText = data.dirt_detected ? 'YES' : 'NO';
+            dirtStatusEl.style.color = data.dirt_detected ? '#EF4444' : '#10B981';
+            
+            const usbStatusEl = document.getElementById('usbStatus');
+            if (data.usb_connected !== undefined) {
+                usbStatusEl.innerText = data.usb_connected ? 'CONNECTED' : 'DISCONNECTED';
+                usbStatusEl.style.color = data.usb_connected ? '#10B981' : '#EF4444';
+            }
+            
+            const cameraBox = document.getElementById('cameraBox');
+            if (data.camera_status === 'READY') {
+                cameraBox.className = 'camera-status active';
+            } else if (data.camera_status === 'FAILED') {
+                cameraBox.className = 'camera-status error';
+            } else {
+                cameraBox.className = 'camera-status';
+            }
+            
             const obstacleAlert = document.getElementById('obstacleAlert');
-            const left = data.left_sensor || 0;
-            const right = data.right_sensor || 0;
-            const frontLeft = data.front_left_sensor || 0;
-            const frontRight = data.front_right_sensor || 0;
+            const minDist = Math.min(
+                data.left_sensor || 999,
+                data.right_sensor || 999,
+                data.front_left_sensor || 999,
+                data.front_right_sensor || 999
+            );
+            obstacleAlert.style.display = (minDist < 30) ? 'block' : 'none';
             
-            if (left < 30 || right < 30 || frontLeft < 30 || frontRight < 30) {
-                obstacleAlert.style.display = 'block';
-            } else {
-                obstacleAlert.style.display = 'none';
-            }
-            
-            // Dirt alert
             const dirtAlert = document.getElementById('dirtAlert');
-            if (data.dirt_detected === true || data.dirt_detected === 'true') {
-                dirtAlert.style.display = 'block';
-            } else {
-                dirtAlert.style.display = 'none';
-            }
+            dirtAlert.style.display = data.dirt_detected ? 'block' : 'none';
             
-            // Simulated battery (since not in API, we'll simulate based on activity)
-            const batteryLevel = 85 - (data.vision_frames % 30);
-            document.getElementById('statBattery')?.remove();
-            const batteryFill = document.getElementById('batteryFill');
-            batteryFill.style.width = `${batteryLevel}%`;
-            batteryFill.innerText = `${batteryLevel}%`;
+            if (data.firmware) {
+                document.getElementById('firmwareVersion').innerText = data.firmware;
+            }
         }
 
-        // Fetch status from ESP32
+        // =====================================================
+        // FETCH STATUS FROM ESP32
+        // =====================================================
         async function fetchStatus() {
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(API_STATUS);
                 if (response.ok) {
                     const data = await response.json();
                     updateDashboard(data);
                 } else {
-                    console.error('Failed to fetch status');
+                    handleConnectionError();
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                // Show offline status
+                handleConnectionError();
+            }
+        }
+
+        // =====================================================
+        // CONNECTION ERROR HANDLER
+        // =====================================================
+        function handleConnectionError() {
+            connectionErrors++;
+            
+            if (connectionErrors > 3) {
+                document.getElementById('connectionBanner').classList.add('show');
                 document.getElementById('statusDot').className = 'status-dot offline';
                 document.getElementById('statusText').innerText = 'Offline';
-            }
-        }
-
-        // Initialize dashboard
-        function init() {
-            if (!ESP_IP || ESP_IP === 'null') {
-                const newIp = prompt('ESP32-S3 IP Address is required. Enter IP:', '192.168.1.100');
-                if (newIp) {
-                    window.location.href = `?ip=${newIp}`;
+                
+                if (connectionErrors === 4) {
+                    addLog(`⚠️ Connection lost to ${ESP_IP}`, 'error');
                 }
             }
-            
-            addLog(`✅ Dashboard connected to ${ESP_IP}`, 'info');
-            
-            // Fetch status every 3 seconds
-            fetchStatus();
-            setInterval(fetchStatus, 3000);
         }
 
-        // Start dashboard
-        init();
+        // =====================================================
+        // CONNECTION CHECKER
+        // =====================================================
+        function checkConnectionHealth() {
+            const timeSinceUpdate = Date.now() - lastUpdateTime;
+            
+            if (timeSinceUpdate > 10000) {
+                addLog('⚠️ No updates received. Checking connection...', 'warning');
+            }
+        }
+
+        // =====================================================
+        // INITIALIZE DASHBOARD
+        // =====================================================
+        function init() {
+            addLog(`✅ Dashboard initialized`, 'success');
+            addLog(`📡 Connecting to ${ESP_IP} (Static IP)`, 'info');
+            addLog('📷 USB Camera: DSJ-3808-308', 'info');
+            addLog('🧹 Dirt detection threshold: 65%', 'info');
+            
+            document.getElementById('ipAddress').innerText = ESP_IP;
+            
+            fetchStatus();
+            setInterval(fetchStatus, 2000);
+            setInterval(checkConnectionHealth, 5000);
+        }
+
+        // =====================================================
+        // CHANGE IP ADDRESS
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            document.getElementById('ipAddress').onclick = function() {
+                const newIp = prompt('Enter new ESP32-S3 IP Address:', ESP_IP);
+                if (newIp && newIp !== ESP_IP) {
+                    localStorage.setItem('esp32_ip', newIp);
+                    location.reload();
+                }
+            };
+        });
     </script>
 </body>
 </html>
