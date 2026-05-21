@@ -6,11 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Smart Cleaner Pro - Supabase Real-Time Dashboard</title>
-    
-    <!-- Supabase Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+    <title>Smart Cleaner Pro - Production Dashboard v6.0</title>
     <style>
         * {
             margin: 0;
@@ -25,7 +21,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #F5F5F7;
+            background: #1a1a2e;
             min-height: 100vh;
             padding: 20px;
             position: relative;
@@ -38,105 +34,65 @@
 
         /* Header */
         .header {
+            text-align: center;
             margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .header-left h1 {
-            font-size: 2.25rem;
-            color: #1D1D1F;
-            margin-bottom: 5px;
-            font-weight: 600;
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #10B981, #059669);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: none;
         }
 
-        .header-left p {
-            color: #86868B;
-            font-size: 0.95rem;
-        }
-
-        .live-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #34C759;
-            animation: pulse 2s infinite;
-        }
-
-        .live-text {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #34C759;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.15); }
-            100% { opacity: 1; transform: scale(1); }
+        .header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 24px;
         }
 
         .stat-card {
-            background: white;
-            border-radius: 16px;
+            background: #1e1e2e;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            border-color: rgba(16,185,129,0.3);
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto 12px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
-        .stat-icon.orange { background: rgba(255,149,0,0.12); }
-        .stat-icon.purple { background: rgba(175,82,222,0.12); }
-        .stat-icon.green { background: rgba(52,199,89,0.12); }
-        .stat-icon.blue { background: rgba(0,122,255,0.12); }
-
         .stat-value {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #1D1D1F;
-            margin-bottom: 4px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #10B981;
+            letter-spacing: -0.5px;
         }
 
         .stat-label {
-            font-size: 0.8rem;
-            color: #86868B;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 5px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 500;
         }
 
         /* Main Grid */
@@ -149,10 +105,15 @@
 
         /* Cards */
         .card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            background: #1e1e2e;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(16,185,129,0.2);
         }
 
         .card-header {
@@ -160,74 +121,28 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #E5E5EA;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
         .card-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #1D1D1F;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #ffffff;
+            letter-spacing: -0.3px;
         }
 
         .card-badge {
-            background: rgba(52,199,89,0.12);
-            color: #34C759;
+            background: rgba(16,185,129,0.12);
+            border: 1px solid rgba(16,185,129,0.2);
+            color: #10B981;
             padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        /* Robot Status Box */
-        .robot-status-box {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            background: #F5F5F7;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .robot-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(0,122,255,0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .robot-info h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1D1D1F;
-            margin-bottom: 4px;
-        }
-
-        .robot-status-text {
-            font-size: 0.875rem;
-            color: #86868B;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .status-dot.online { background: #34C759; }
-        .status-dot.offline { background: #8E8E93; }
-        .status-dot.error { background: #FF3B30; }
 
         /* Sensor Grid */
         .sensor-grid {
@@ -238,211 +153,221 @@
 
         .sensor-item {
             text-align: center;
-            padding: 16px;
-            background: #F5F5F7;
-            border-radius: 12px;
-            transition: background 0.2s ease;
+            padding: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            transition: all 0.3s ease;
         }
 
         .sensor-item:hover {
-            background: #EBEBEB;
+            background: rgba(16,185,129,0.05);
+            border-color: rgba(16,185,129,0.2);
         }
 
         .sensor-label {
             font-size: 0.75rem;
-            color: #86868B;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 500;
         }
 
         .sensor-value {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #1D1D1F;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         .sensor-unit {
-            font-size: 0.875rem;
-            color: #86868B;
-            font-weight: 400;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
         }
 
         /* Camera Status Box */
         .camera-status {
-            padding: 16px;
-            background: #F5F5F7;
+            padding: 12px;
+            background: rgba(139,92,246,0.08);
+            border: 1px solid rgba(139,92,246,0.15);
             border-radius: 12px;
             margin-top: 16px;
+            transition: all 0.3s ease;
         }
 
         .camera-status.active {
-            background: rgba(52,199,89,0.08);
+            background: rgba(16,185,129,0.08);
+            border-color: rgba(16,185,129,0.15);
         }
 
         .camera-status.error {
-            background: rgba(255,59,48,0.08);
+            background: rgba(239,68,68,0.08);
+            border-color: rgba(239,68,68,0.15);
         }
 
         .camera-metric {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
-            font-size: 0.9rem;
+            margin: 8px 0;
+            font-size: 0.85rem;
         }
 
         .camera-metric span:first-child {
-            color: #86868B;
+            color: rgba(255,255,255,0.5);
         }
 
         .camera-metric span:last-child {
             font-weight: 600;
-            color: #1D1D1F;
+            color: #ffffff;
         }
 
         /* Command Buttons */
         .command-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin-top: 16px;
         }
 
         .cmd-btn {
-            padding: 14px;
-            border: none;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.8);
         }
 
-        .cmd-btn:hover:not(:disabled) {
+        .cmd-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-color: rgba(16,185,129,0.3);
         }
 
-        .cmd-btn:active:not(:disabled) {
-            transform: scale(0.98);
+        .cmd-btn:active {
+            transform: translateY(0);
         }
 
-        .cmd-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+        .cmd-forward:hover { 
+            background: rgba(16,185,129,0.15);
+            border-color: #10B981;
+            color: #10B981;
+        }
+        .cmd-backward:hover { 
+            background: rgba(245,158,11,0.15);
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+        .cmd-left:hover, .cmd-right:hover { 
+            background: rgba(59,130,246,0.15);
+            border-color: #3B82F6;
+            color: #3B82F6;
+        }
+        .cmd-stop:hover { 
+            background: rgba(239,68,68,0.15);
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+        .cmd-auto:hover { 
+            background: rgba(139,92,246,0.15);
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+        .cmd-charge:hover { 
+            background: rgba(6,182,212,0.15);
+            border-color: #06B6D4;
+            color: #06B6D4;
         }
 
-        .cmd-forward { 
-            background: rgba(52,199,89,0.12);
-            color: #34C759;
+        /* Status Indicator */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .cmd-backward { 
-            background: rgba(255,149,0,0.12);
-            color: #FF9500;
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
-        .cmd-left { 
-            background: rgba(0,122,255,0.12);
-            color: #007AFF;
+
+        .status-dot.online { 
+            background: #10B981;
+            box-shadow: 0 0 8px rgba(16,185,129,0.4);
         }
-        .cmd-right { 
-            background: rgba(0,122,255,0.12);
-            color: #007AFF;
+        .status-dot.offline { 
+            background: #EF4444;
+            box-shadow: 0 0 8px rgba(239,68,68,0.4);
         }
-        .cmd-stop { 
-            background: rgba(255,59,48,0.12);
-            color: #FF3B30;
+        .status-dot.cleaning { 
+            background: #3B82F6;
+            box-shadow: 0 0 8px rgba(59,130,246,0.4);
         }
-        .cmd-auto { 
-            background: rgba(175,82,222,0.12);
-            color: #AF52DE;
-        }
-        .cmd-manual { 
-            background: #F5F5F7;
-            color: #1D1D1F;
-        }
-        .cmd-charge { 
-            background: rgba(0,122,255,0.12);
-            color: #007AFF;
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         /* Alert */
         .alert {
-            padding: 14px 16px;
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.15);
+            padding: 12px;
             border-radius: 12px;
             margin-top: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .alert-icon {
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-
-        .alert-content {
-            flex: 1;
         }
 
         .alert-title {
             font-weight: 600;
+            color: #F59E0B;
             margin-bottom: 4px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .alert-text {
-            font-size: 0.85rem;
-            line-height: 1.4;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
         }
 
         .alert.success {
-            background: rgba(52,199,89,0.08);
+            background: rgba(16,185,129,0.08);
+            border-color: rgba(16,185,129,0.15);
         }
 
-        .alert.success .alert-icon,
         .alert.success .alert-title {
-            color: #34C759;
-        }
-
-        .alert.success .alert-text {
-            color: #1D1D1F;
+            color: #10B981;
         }
 
         .alert.danger {
-            background: rgba(255,59,48,0.08);
+            background: rgba(239,68,68,0.08);
+            border-color: rgba(239,68,68,0.15);
         }
 
-        .alert.danger .alert-icon,
         .alert.danger .alert-title {
-            color: #FF3B30;
-        }
-
-        .alert.danger .alert-text {
-            color: #1D1D1F;
+            color: #EF4444;
         }
 
         .alert.info {
-            background: rgba(0,122,255,0.08);
+            background: rgba(139,92,246,0.08);
+            border-color: rgba(139,92,246,0.15);
         }
 
-        .alert.info .alert-icon,
         .alert.info .alert-title {
-            color: #007AFF;
+            color: #8B5CF6;
         }
 
-        .alert.info .alert-text {
-            color: #1D1D1F;
-        }
-
-        /* Connection Banner */
+        /* Connection Status Banner */
         .connection-banner {
-            background: rgba(255,59,48,0.08);
-            border: 1px solid rgba(255,59,48,0.2);
-            color: #FF3B30;
-            padding: 16px;
-            border-radius: 12px;
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.15);
+            color: #EF4444;
+            padding: 14px;
+            border-radius: 14px;
             margin-bottom: 20px;
             text-align: center;
             font-weight: 600;
@@ -453,21 +378,12 @@
             display: block;
         }
 
-        .connection-banner.success {
-            background: rgba(52,199,89,0.08);
-            border-color: rgba(52,199,89,0.2);
-            color: #34C759;
-        }
-
         /* Logs */
         .logs-container {
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
-            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
-            font-size: 0.8rem;
-            background: #F5F5F7;
-            border-radius: 8px;
-            padding: 12px;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            font-size: 0.75rem;
         }
 
         .logs-container::-webkit-scrollbar {
@@ -475,64 +391,95 @@
         }
 
         .logs-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .logs-container::-webkit-scrollbar-thumb {
-            background: #D1D1D6;
+            background: rgba(255,255,255,0.03);
             border-radius: 3px;
         }
 
-        .logs-container::-webkit-scrollbar-thumb:hover {
-            background: #C7C7CC;
+        .logs-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
         }
 
         .log-entry {
-            padding: 6px 0;
-            border-bottom: 1px solid #E5E5EA;
-            color: #1D1D1F;
-        }
-
-        .log-entry:last-child {
-            border-bottom: none;
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.7);
         }
 
         .log-time {
-            color: #86868B;
-            margin-right: 8px;
-            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-right: 10px;
+            font-size: 0.7rem;
         }
 
         /* Footer */
         .footer {
             text-align: center;
-            color: #86868B;
-            margin-top: 40px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 30px;
             padding: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
         }
 
         .footer p {
             margin: 4px 0;
         }
 
-        /* Responsive Design */
+        #ipAddress {
+            color: #10B981;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        #ipAddress:hover {
+            opacity: 0.8;
+        }
+
+        /* Battery Bar */
+        .battery-container {
+            margin: 16px 0;
+        }
+
+        .battery-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .battery-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981, #059669);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+           ======================================== */
+
         @media (max-width: 575px) {
             body { padding: 12px; }
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            .header-left h1 { font-size: 1.75rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .main-grid { grid-template-columns: 1fr; gap: 16px; }
+            .header h1 { font-size: 1.6rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-value { font-size: 1.4rem; }
+            .main-grid { grid-template-columns: 1fr; }
+            .card { padding: 16px; }
+            .sensor-grid { grid-template-columns: 1fr; }
             .command-grid { grid-template-columns: repeat(2, 1fr); }
+            .cmd-btn { padding: 10px; font-size: 0.8rem; }
         }
 
         @media (min-width: 576px) and (max-width: 767px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .main-grid { grid-template-columns: 1fr; }
+            .sensor-grid { grid-template-columns: repeat(2, 1fr); }
+            .command-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (min-width: 768px) and (max-width: 991px) {
@@ -540,9 +487,18 @@
             .main-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        @media (min-width: 1600px) {
-            .container { max-width: 1600px; }
+        @media (min-width: 992px) {
+            .stats-grid { grid-template-columns: repeat(5, 1fr); }
+            .main-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1400px) {
+            .container { max-width: 1320px; }
             .main-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .cmd-btn { min-height: 48px; }
         }
     </style>
 </head>
@@ -550,47 +506,41 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="header-left">
-                <h1>Dashboard</h1>
-                <p>Smart Cleaner Pro</p>
-            </div>
-            <div class="live-indicator">
-                <div class="live-dot"></div>
-                <span class="live-text">Live</span>
-            </div>
+            <h1>🤖 Smart Cleaner Pro</h1>
+            <p>Production Dashboard v6.0 | Static IP: 192.168.1.178</p>
         </div>
 
         <!-- Connection Status Banner -->
         <div class="connection-banner" id="connectionBanner">
-            ⚡ Connecting to Supabase real-time...
+            ⚠️ Connection Lost - Attempting to reconnect to 192.168.1.178...
         </div>
 
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon orange">📷</div>
-                <div class="stat-value" id="statFrames">—</div>
-                <div class="stat-label">FRAMES CAPTURED</div>
+                <div class="stat-icon">📷</div>
+                <div class="stat-value" id="statFrames">0</div>
+                <div class="stat-label">Frames Captured</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon orange">🎯</div>
-                <div class="stat-value" id="statFps">—</div>
-                <div class="stat-label">CAMERA FPS</div>
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="statFps">0.0</div>
+                <div class="stat-label">Camera FPS</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon purple">🧹</div>
-                <div class="stat-value" id="statDirt">—%</div>
-                <div class="stat-label">DIRT SCORE</div>
+                <div class="stat-icon">🧹</div>
+                <div class="stat-value" id="statDirt">0%</div>
+                <div class="stat-label">Dirt Score</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon blue">💡</div>
-                <div class="stat-value" id="statBrightness">—</div>
-                <div class="stat-label">BRIGHTNESS</div>
+                <div class="stat-icon">💡</div>
+                <div class="stat-value" id="statBrightness">0</div>
+                <div class="stat-label">Brightness</div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon green">🔄</div>
-                <div class="stat-value" id="statLatency">—ms</div>
-                <div class="stat-label">LATENCY</div>
+                <div class="stat-icon">📡</div>
+                <div class="stat-value" id="statWifi">0%</div>
+                <div class="stat-label">WiFi Signal</div>
             </div>
         </div>
 
@@ -600,29 +550,20 @@
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">🤖 Robot Status</span>
-                    <span class="card-badge">Real-Time</span>
+                    <div class="status-indicator">
+                        <div class="status-dot online" id="statusDot"></div>
+                        <span id="statusText" style="color: white;">-</span>
+                    </div>
                 </div>
                 
-                <!-- Robot Status Box -->
-                <div class="robot-status-box">
-                    <div class="robot-icon">🤖</div>
-                    <div class="robot-info">
-                        <h3>Smart Cleaner Pro</h3>
-                        <div class="robot-status-text">
-                            <div class="status-dot offline" id="statusDot"></div>
-                            <span id="statusText">Connecting...</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="sensor-grid">
                     <div class="sensor-item">
-                        <div class="sensor-label">MOVEMENT</div>
-                        <div class="sensor-value" id="movement">—</div>
+                        <div class="sensor-label">Movement</div>
+                        <div class="sensor-value" id="movement">STOP</div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">MODE</div>
-                        <div class="sensor-value" id="mode">—</div>
+                        <div class="sensor-label">Mode</div>
+                        <div class="sensor-value" id="mode">MANUAL</div>
                     </div>
                 </div>
 
@@ -630,29 +571,26 @@
                 <div class="camera-status" id="cameraBox">
                     <div class="camera-metric">
                         <span>📷 Camera Status</span>
-                        <span id="camStatus">—</span>
+                        <span id="camStatus">READY</span>
                     </div>
                     <div class="camera-metric">
-                        <span>📤 Frames Uploaded</span>
-                        <span id="framesUploaded">—</span>
+                        <span>⚡ Processing Time</span>
+                        <span id="procTime">0ms</span>
                     </div>
                     <div class="camera-metric">
                         <span>🧹 Dirt Detected</span>
-                        <span id="dirtStatus">—</span>
+                        <span id="dirtStatus">NO</span>
                     </div>
                     <div class="camera-metric">
                         <span>🔌 USB Connection</span>
-                        <span id="usbStatus">—</span>
+                        <span id="usbStatus">CONNECTED</span>
                     </div>
                 </div>
 
                 <!-- Dirt Alert -->
                 <div class="alert danger" id="dirtAlert" style="display: none;">
-                    <div class="alert-icon">⚠️</div>
-                    <div class="alert-content">
-                        <div class="alert-title">Dirt Detected!</div>
-                        <div class="alert-text">Robot has detected dirt. Switching to thorough cleaning mode.</div>
-                    </div>
+                    <div class="alert-title">⚠️ Dirt Detected!</div>
+                    <div class="alert-text">Robot has detected dirt. Switching to thorough cleaning mode.</div>
                 </div>
             </div>
 
@@ -660,75 +598,69 @@
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">📊 Ultrasonic Sensors</span>
-                    <span class="card-badge">Real-Time</span>
+                    <span class="card-badge">Live</span>
                 </div>
                 
                 <div class="sensor-grid">
                     <div class="sensor-item">
-                        <div class="sensor-label">⬅️ LEFT SENSOR</div>
-                        <div class="sensor-value" id="leftSensor">— <span class="sensor-unit">cm</span></div>
+                        <div class="sensor-label">⬅️ Left</div>
+                        <div class="sensor-value" id="leftSensor">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">➡️ RIGHT SENSOR</div>
-                        <div class="sensor-value" id="rightSensor">— <span class="sensor-unit">cm</span></div>
+                        <div class="sensor-label">➡️ Right</div>
+                        <div class="sensor-value" id="rightSensor">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">⬆️ FRONT LEFT</div>
-                        <div class="sensor-value" id="frontLeft">— <span class="sensor-unit">cm</span></div>
+                        <div class="sensor-label">⬆️ Front-L</div>
+                        <div class="sensor-value" id="frontLeft">0 <span class="sensor-unit">cm</span></div>
                     </div>
                     <div class="sensor-item">
-                        <div class="sensor-label">⬆️ FRONT RIGHT</div>
-                        <div class="sensor-value" id="frontRight">— <span class="sensor-unit">cm</span></div>
+                        <div class="sensor-label">⬆️ Front-R</div>
+                        <div class="sensor-value" id="frontRight">0 <span class="sensor-unit">cm</span></div>
                     </div>
                 </div>
 
                 <!-- Obstacle Alert -->
                 <div class="alert danger" id="obstacleAlert" style="display: none;">
-                    <div class="alert-icon">⚠️</div>
-                    <div class="alert-content">
-                        <div class="alert-title">Obstacle Detected!</div>
-                        <div class="alert-text">Robot detected an obstacle nearby. Adjusting path automatically.</div>
-                    </div>
+                    <div class="alert-title">⚠️ Obstacle Detected!</div>
+                    <div class="alert-text">Robot detected an obstacle nearby. Adjusting path.</div>
                 </div>
             </div>
 
             <!-- Controls Card -->
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">🎮 Cleaning Controls</span>
-                    <span class="card-badge" id="modeBadge">—</span>
+                    <span class="card-title">🎮 Manual Controls</span>
+                    <span class="card-badge" id="modeBadge">MANUAL</span>
                 </div>
                 
                 <div class="command-grid">
-                    <button class="cmd-btn cmd-forward" onclick="sendCommand('FORWARD')" disabled>⬆️ Forward</button>
-                    <button class="cmd-btn cmd-stop" onclick="sendCommand('STOP')" disabled>⏹️ Stop</button>
-                    <button class="cmd-btn cmd-backward" onclick="sendCommand('BACKWARD')" disabled>⬇️ Backward</button>
-                    <button class="cmd-btn cmd-left" onclick="sendCommand('LEFT')" disabled>⬅️ Left</button>
-                    <button class="cmd-btn cmd-right" onclick="sendCommand('RIGHT')" disabled>➡️ Right</button>
-                    <button class="cmd-btn cmd-auto" onclick="sendCommand('AUTO_MODE')" disabled>🤖 Auto Mode</button>
-                    <button class="cmd-btn cmd-manual" onclick="sendCommand('MANUAL_MODE')" disabled>✋ Manual</button>
-                    <button class="cmd-btn cmd-charge" onclick="sendCommand('RETURN_CHARGE')" disabled>🔋 Return</button>
+                    <button class="cmd-btn cmd-forward" onclick="sendCommand('FORWARD')">⬆️ FWD</button>
+                    <button class="cmd-btn cmd-stop" onclick="sendCommand('STOP')">⏹️ STOP</button>
+                    <button class="cmd-btn cmd-backward" onclick="sendCommand('BACKWARD')">⬇️ BWD</button>
+                    <button class="cmd-btn cmd-left" onclick="sendCommand('LEFT')">⬅️ LEFT</button>
+                    <button class="cmd-btn cmd-right" onclick="sendCommand('RIGHT')">➡️ RIGHT</button>
+                    <button class="cmd-btn cmd-auto" onclick="sendCommand('AUTO_MODE')">🤖 AUTO</button>
+                    <button class="cmd-btn cmd-manual" onclick="sendCommand('MANUAL_MODE')">✋ MANUAL</button>
+                    <button class="cmd-btn cmd-charge" onclick="sendCommand('RETURN_CHARGE')">🔋 CHARGE</button>
                 </div>
 
                 <div class="alert info" style="margin-top: 20px;">
-                    <div class="alert-icon">💡</div>
-                    <div class="alert-content">
-                        <div class="alert-title">Real-Time WebSocket</div>
-                        <div class="alert-text">Commands execute instantly via Supabase with <500ms latency. AUTO mode enables intelligent navigation with real-time dirt detection.</div>
-                    </div>
+                    <div class="alert-title">💡 USB Camera AI Vision</div>
+                    <div class="alert-text">AUTO mode enables intelligent navigation with real-time dirt detection (65% threshold). DSJ-3808-308 camera captures frames every 3 seconds.</div>
                 </div>
             </div>
 
-            <!-- System Logs Card -->
+            <!-- Command Logs Card -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">📝 System Logs</span>
-                    <span class="card-badge">Real-Time</span>
+                    <span class="card-badge">Live</span>
                 </div>
                 <div class="logs-container" id="logsContainer">
                     <div class="log-entry">
                         <span class="log-time">--:--:--</span>
-                        Initializing Supabase connection...
+                        Initializing dashboard...
                     </div>
                 </div>
             </div>
@@ -736,33 +668,51 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>Smart Cleaner Pro • Production v6.0 • Supabase Real-Time Dashboard</p>
-            <p>WebSocket Updates • <span id="updateCount">0</span> updates • Avg Latency: <span id="avgLatency">—</span>ms</p>
-            <p>Robot: <span id="robotSerial">SMARTCLEANER001</span> • Database: Connected ✓</p>
+            <p>Smart Cleaner Pro v6.0 PRODUCTION | USB Camera: DSJ-3808-308 | ESP32-S3</p>
+            <p>Static IP: 192.168.1.178 (Never Changes) | Updates every 2 seconds</p>
+            <p id="firmwareInfo">Firmware: <span id="firmwareVersion">v6.0</span> | Click IP to change: <span id="ipAddress">192.168.1.178</span></p>
         </div>
     </div>
 
     <script>
-        // ══════════════════════════════════════════════════════════
-        // SUPABASE CONFIGURATION - PRODUCTION
-        // ══════════════════════════════════════════════════════════
-        const SUPABASE_URL = 'https://hdiqbfngevcpeylzwndq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkaXFiZm5nZXZjcGV5bHp3bmRxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxODE1NDIsImV4cCI6MjA4NDc1NzU0Mn0.VsbBc06KVttmy5QJTdYSvPYHr6oD9MncRpjJadD9XS0';
-        const ROBOT_SERIAL = 'SMARTCLEANER001';
-
-        // Initialize Supabase client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // =====================================================
+        // CONFIGURATION - STATIC IP
+        // =====================================================
+        let ESP_IP = localStorage.getItem('esp32_ip') || '192.168.1.178';  // Default static IP
         
-        let robotId = null;
-        let subscription = null;
-        let isConnected = false;
-        let updateCount = 0;
-        let latencySum = 0;
+        const API_STATUS = `http://${ESP_IP}/api/status`;
+        const API_COMMAND = `http://${ESP_IP}/api/command`;
+        const API_CAMERA = `http://${ESP_IP}/api/camera`;
+        
+        let connectionErrors = 0;
         let lastUpdateTime = Date.now();
 
-        // ══════════════════════════════════════════════════════════
+        // =====================================================
+        // COMMAND FUNCTIONS
+        // =====================================================
+        async function sendCommand(command) {
+            try {
+                const response = await fetch(API_COMMAND, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: command })
+                });
+                
+                if (response.ok) {
+                    addLog(`📱 Command sent: ${command}`, 'success');
+                    fetchStatus();
+                } else {
+                    addLog(`❌ Command failed: ${command}`, 'error');
+                }
+            } catch (error) {
+                console.error('Command error:', error);
+                addLog(`❌ Network error: ${command}`, 'error');
+            }
+        }
+
+        // =====================================================
         // LOGGING SYSTEM
-        // ══════════════════════════════════════════════════════════
+        // =====================================================
         function addLog(message, type = 'info') {
             const logsContainer = document.getElementById('logsContainer');
             const time = new Date().toLocaleTimeString();
@@ -782,327 +732,159 @@
             }
         }
 
-        // ══════════════════════════════════════════════════════════
-        // GET ROBOT ID FROM DATABASE
-        // ══════════════════════════════════════════════════════════
-        async function fetchRobotId() {
-            try {
-                const { data, error } = await supabase
-                    .from('robots')
-                    .select('id, name, is_online')
-                    .eq('serial_number', ROBOT_SERIAL)
-                    .single();
-
-                if (error) throw error;
-
-                if (data) {
-                    robotId = data.id;
-                    document.getElementById('robotSerial').innerText = ROBOT_SERIAL;
-                    addLog(`Robot found: ${data.name} (${robotId.substring(0, 8)}...)`, 'success');
-                    return true;
-                } else {
-                    addLog('Robot not found in database', 'error');
-                    return false;
-                }
-            } catch (error) {
-                addLog(`Error fetching robot: ${error.message}`, 'error');
-                return false;
-            }
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // FETCH CURRENT STATUS
-        // ══════════════════════════════════════════════════════════
-        async function fetchCurrentStatus() {
-            if (!robotId) return;
-
-            try {
-                const { data, error } = await supabase
-                    .from('robot_status')
-                    .select('*')
-                    .eq('robot_id', robotId)
-                    .order('last_updated', { ascending: false })
-                    .limit(1)
-                    .single();
-
-                if (error && error.code !== 'PGRST116') {
-                    console.error('Error fetching status:', error);
-                    return;
-                }
-
-                if (data) {
-                    updateDashboard(data);
-                    addLog('Initial status loaded from database', 'success');
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // SUBSCRIBE TO REAL-TIME UPDATES
-        // ══════════════════════════════════════════════════════════
-        async function subscribeToRealtime() {
-            if (!robotId) return;
-
-            addLog('Establishing WebSocket connection...', 'info');
-
-            subscription = supabase
-                .channel(`robot-status-${robotId}`)
-                .on(
-                    'postgres_changes',
-                    {
-                        event: 'INSERT',
-                        schema: 'public',
-                        table: 'robot_status',
-                        filter: `robot_id=eq.${robotId}`
-                    },
-                    (payload) => {
-                        handleRealtimeUpdate(payload.new);
-                    }
-                )
-                .on(
-                    'postgres_changes',
-                    {
-                        event: 'UPDATE',
-                        schema: 'public',
-                        table: 'robot_status',
-                        filter: `robot_id=eq.${robotId}`
-                    },
-                    (payload) => {
-                        handleRealtimeUpdate(payload.new);
-                    }
-                )
-                .subscribe((status) => {
-                    if (status === 'SUBSCRIBED') {
-                        isConnected = true;
-                        showConnectionSuccess();
-                        addLog('✅ Real-time WebSocket connected', 'success');
-                        enableButtons();
-                    } else if (status === 'CLOSED') {
-                        isConnected = false;
-                        showConnectionError('WebSocket closed');
-                        disableButtons();
-                    } else if (status === 'CHANNEL_ERROR') {
-                        isConnected = false;
-                        showConnectionError('Channel error');
-                        disableButtons();
-                    }
-                });
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // HANDLE REAL-TIME UPDATE
-        // ══════════════════════════════════════════════════════════
-        function handleRealtimeUpdate(data) {
-            const currentTime = Date.now();
-            const latency = currentTime - lastUpdateTime;
-            lastUpdateTime = currentTime;
-
-            updateCount++;
-            latencySum += latency;
-            const avgLatency = Math.round(latencySum / updateCount);
-
-            document.getElementById('updateCount').innerText = updateCount;
-            document.getElementById('avgLatency').innerText = avgLatency;
-            document.getElementById('statLatency').innerText = `${latency}ms`;
-
-            updateDashboard(data);
-            
-            if (updateCount % 10 === 0) {
-                addLog(`Real-time update #${updateCount} (${latency}ms)`, 'success');
-            }
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // UPDATE DASHBOARD WITH REAL DATA
-        // ══════════════════════════════════════════════════════════
+        // =====================================================
+        // DASHBOARD UPDATE
+        // =====================================================
         function updateDashboard(data) {
-            // Status indicator (Green = online/active, Gray = offline/idle, Red = error)
+            lastUpdateTime = Date.now();
+            connectionErrors = 0;
+            
+            document.getElementById('connectionBanner').classList.remove('show');
+            
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
             
-            statusText.innerText = data.status || 'UNKNOWN';
+            statusText.innerText = data.status || 'IDLE';
             
             if (data.status === 'CLEANING' || data.status === 'AUTO_CLEANING') {
-                statusDot.className = 'status-dot online'; // Green for active cleaning
-            } else if (data.status === 'IDLE' || data.status === 'STOPPED' || data.status === 'INITIALIZING') {
-                statusDot.className = 'status-dot offline'; // Gray for idle
-            } else if (data.status === 'ERROR' || data.status === 'FAILED') {
-                statusDot.className = 'status-dot error'; // Red for error
+                statusDot.className = 'status-dot cleaning';
+            } else if (data.status === 'IDLE' || data.status === 'STOPPED') {
+                statusDot.className = 'status-dot online';
+            } else if (data.camera_status === 'PROCESSING') {
+                statusDot.className = 'status-dot processing';
             } else {
-                statusDot.className = 'status-dot offline'; // Default gray
+                statusDot.className = 'status-dot online';
             }
             
-            // Movement and Mode
-            document.getElementById('movement').innerText = data.movement || '—';
-            document.getElementById('mode').innerText = data.mode || '—';
-            document.getElementById('modeBadge').innerText = data.mode || '—';
+            document.getElementById('movement').innerText = data.movement || 'STOP';
+            document.getElementById('mode').innerText = data.mode || 'MANUAL';
+            document.getElementById('modeBadge').innerText = data.mode || 'MANUAL';
             
-            // Sensors with null checks - use em-dash for missing data
-            document.getElementById('leftSensor').innerHTML = `${data.left_sensor ?? '—'} <span class="sensor-unit">cm</span>`;
-            document.getElementById('rightSensor').innerHTML = `${data.right_sensor ?? '—'} <span class="sensor-unit">cm</span>`;
-            document.getElementById('frontLeft').innerHTML = `${data.front_left_sensor ?? '—'} <span class="sensor-unit">cm</span>`;
-            document.getElementById('frontRight').innerHTML = `${data.front_right_sensor ?? '—'} <span class="sensor-unit">cm</span>`;
+            document.getElementById('leftSensor').innerHTML = `${data.left_sensor || 0} <span class="sensor-unit">cm</span>`;
+            document.getElementById('rightSensor').innerHTML = `${data.right_sensor || 0} <span class="sensor-unit">cm</span>`;
+            document.getElementById('frontLeft').innerHTML = `${data.front_left_sensor || 0} <span class="sensor-unit">cm</span>`;
+            document.getElementById('frontRight').innerHTML = `${data.front_right_sensor || 0} <span class="sensor-unit">cm</span>`;
             
-            // Camera Stats - use em-dash for missing data
-            document.getElementById('statFrames').innerText = data.frames_captured ?? '—';
-            document.getElementById('statFps').innerText = data.camera_fps !== null && data.camera_fps !== undefined ? data.camera_fps.toFixed(2) : '—';
-            document.getElementById('statDirt').innerText = `${data.dirt_confidence ?? '—'}%`;
-            document.getElementById('statBrightness').innerText = data.camera_brightness ?? '—';
+            document.getElementById('statFrames').innerText = data.camera_frames || 0;
+            document.getElementById('statFps').innerText = (data.camera_fps || 0).toFixed(1);
+            document.getElementById('statDirt').innerText = `${data.dirt_score || 0}%`;
+            document.getElementById('statBrightness').innerText = data.camera_brightness || 0;
+            document.getElementById('statWifi').innerText = `${data.wifi || 0}%`;
             
-            // Camera Status
-            document.getElementById('camStatus').innerText = data.camera_status || '—';
-            document.getElementById('framesUploaded').innerText = data.frames_uploaded ?? '—';
+            document.getElementById('camStatus').innerText = data.camera_status || 'OFFLINE';
+            document.getElementById('procTime').innerText = `${data.processing_time || 0}ms`;
             
             const dirtStatusEl = document.getElementById('dirtStatus');
-            if (data.dirt_detected !== null && data.dirt_detected !== undefined) {
-                dirtStatusEl.innerText = data.dirt_detected ? 'YES' : 'NO';
-                dirtStatusEl.style.color = data.dirt_detected ? '#FF3B30' : '#34C759';
-            } else {
-                dirtStatusEl.innerText = '—';
-                dirtStatusEl.style.color = '#86868B';
-            }
+            dirtStatusEl.innerText = data.dirt_detected ? 'YES' : 'NO';
+            dirtStatusEl.style.color = data.dirt_detected ? '#EF4444' : '#10B981';
             
             const usbStatusEl = document.getElementById('usbStatus');
-            if (data.usb_connected !== null && data.usb_connected !== undefined) {
+            if (data.usb_connected !== undefined) {
                 usbStatusEl.innerText = data.usb_connected ? 'CONNECTED' : 'DISCONNECTED';
-                usbStatusEl.style.color = data.usb_connected ? '#34C759' : '#FF3B30';
-            } else {
-                usbStatusEl.innerText = '—';
-                usbStatusEl.style.color = '#86868B';
+                usbStatusEl.style.color = data.usb_connected ? '#10B981' : '#EF4444';
             }
             
-            // Camera Box Styling
             const cameraBox = document.getElementById('cameraBox');
             if (data.camera_status === 'READY') {
                 cameraBox.className = 'camera-status active';
-            } else if (data.camera_status === 'FAILED' || data.camera_status === 'CAPTURE_FAILED') {
+            } else if (data.camera_status === 'FAILED') {
                 cameraBox.className = 'camera-status error';
             } else {
                 cameraBox.className = 'camera-status';
             }
             
-            // Obstacle alert - only show if we have valid sensor data
             const obstacleAlert = document.getElementById('obstacleAlert');
-            if (data.left_sensor !== null && data.right_sensor !== null && 
-                data.front_left_sensor !== null && data.front_right_sensor !== null) {
-                const minDist = Math.min(
-                    data.left_sensor,
-                    data.right_sensor,
-                    data.front_left_sensor,
-                    data.front_right_sensor
-                );
-                obstacleAlert.style.display = (minDist < 30) ? 'block' : 'none';
-            } else {
-                obstacleAlert.style.display = 'none';
-            }
+            const minDist = Math.min(
+                data.left_sensor || 999,
+                data.right_sensor || 999,
+                data.front_left_sensor || 999,
+                data.front_right_sensor || 999
+            );
+            obstacleAlert.style.display = (minDist < 30) ? 'block' : 'none';
             
-            // Dirt alert
             const dirtAlert = document.getElementById('dirtAlert');
             dirtAlert.style.display = data.dirt_detected ? 'block' : 'none';
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // SEND COMMAND TO DATABASE
-        // ══════════════════════════════════════════════════════════
-        async function sendCommand(command) {
-            if (!robotId || !isConnected) {
-                addLog('Cannot send command: Not connected', 'error');
-                return;
-            }
-
-            try {
-                // Insert command into command_queue table
-                const { data, error } = await supabase
-                    .from('command_queue')
-                    .insert({
-                        robot_id: robotId,
-                        command: command,
-                        status: 'pending',
-                        created_at: new Date().toISOString()
-                    })
-                    .select();
-
-                if (error) throw error;
-
-                addLog(`Command sent: ${command}`, 'success');
-                
-                // Optimistic UI update for instant feedback
-                if (command === 'FORWARD' || command === 'BACKWARD' || command === 'LEFT' || command === 'RIGHT' || command === 'STOP') {
-                    document.getElementById('movement').innerText = command;
-                } else if (command === 'AUTO_MODE') {
-                    document.getElementById('mode').innerText = 'AUTO';
-                } else if (command === 'MANUAL_MODE') {
-                    document.getElementById('mode').innerText = 'MANUAL';
-                }
-
-            } catch (error) {
-                addLog(`Command failed: ${error.message}`, 'error');
-            }
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // UI HELPERS
-        // ══════════════════════════════════════════════════════════
-        function showConnectionSuccess() {
-            const banner = document.getElementById('connectionBanner');
-            banner.innerText = '✅ Connected to Supabase Real-Time';
-            banner.className = 'connection-banner success show';
-            setTimeout(() => banner.classList.remove('show'), 3000);
-        }
-
-        function showConnectionError(message) {
-            const banner = document.getElementById('connectionBanner');
-            banner.innerText = `⚠️ Connection Error: ${message}`;
-            banner.className = 'connection-banner show';
-        }
-
-        function enableButtons() {
-            document.querySelectorAll('.cmd-btn').forEach(btn => {
-                btn.disabled = false;
-            });
-        }
-
-        function disableButtons() {
-            document.querySelectorAll('.cmd-btn').forEach(btn => {
-                btn.disabled = true;
-            });
-        }
-
-        // ══════════════════════════════════════════════════════════
-        // INITIALIZE DASHBOARD
-        // ══════════════════════════════════════════════════════════
-        async function init() {
-            addLog('🚀 Initializing Supabase Dashboard', 'info');
-            addLog(`Connecting to: ${SUPABASE_URL}`, 'info');
-            addLog(`Robot Serial: ${ROBOT_SERIAL}`, 'info');
-
-            // Fetch robot ID
-            const robotFound = await fetchRobotId();
             
-            if (robotFound) {
-                // Fetch initial status
-                await fetchCurrentStatus();
-                
-                // Subscribe to real-time updates
-                await subscribeToRealtime();
-            } else {
-                showConnectionError('Robot not found in database');
-                addLog('❌ Failed to initialize: Robot not found', 'error');
+            if (data.firmware) {
+                document.getElementById('firmwareVersion').innerText = data.firmware;
             }
         }
 
-        // ══════════════════════════════════════════════════════════
-        // START DASHBOARD ON PAGE LOAD
-        // ══════════════════════════════════════════════════════════
-        window.addEventListener('DOMContentLoaded', init);
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (subscription) {
-                subscription.unsubscribe();
+        // =====================================================
+        // FETCH STATUS FROM ESP32
+        // =====================================================
+        async function fetchStatus() {
+            try {
+                const response = await fetch(API_STATUS);
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboard(data);
+                } else {
+                    handleConnectionError();
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                handleConnectionError();
             }
+        }
+
+        // =====================================================
+        // CONNECTION ERROR HANDLER
+        // =====================================================
+        function handleConnectionError() {
+            connectionErrors++;
+            
+            if (connectionErrors > 3) {
+                document.getElementById('connectionBanner').classList.add('show');
+                document.getElementById('statusDot').className = 'status-dot offline';
+                document.getElementById('statusText').innerText = 'Offline';
+                
+                if (connectionErrors === 4) {
+                    addLog(`⚠️ Connection lost to ${ESP_IP}`, 'error');
+                }
+            }
+        }
+
+        // =====================================================
+        // CONNECTION CHECKER
+        // =====================================================
+        function checkConnectionHealth() {
+            const timeSinceUpdate = Date.now() - lastUpdateTime;
+            
+            if (timeSinceUpdate > 10000) {
+                addLog('⚠️ No updates received. Checking connection...', 'warning');
+            }
+        }
+
+        // =====================================================
+        // INITIALIZE DASHBOARD
+        // =====================================================
+        function init() {
+            addLog(`✅ Dashboard initialized`, 'success');
+            addLog(`📡 Connecting to ${ESP_IP} (Static IP)`, 'info');
+            addLog('📷 USB Camera: DSJ-3808-308', 'info');
+            addLog('🧹 Dirt detection threshold: 65%', 'info');
+            
+            document.getElementById('ipAddress').innerText = ESP_IP;
+            
+            fetchStatus();
+            setInterval(fetchStatus, 2000);
+            setInterval(checkConnectionHealth, 5000);
+        }
+
+        // =====================================================
+        // CHANGE IP ADDRESS
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            document.getElementById('ipAddress').onclick = function() {
+                const newIp = prompt('Enter new ESP32-S3 IP Address:', ESP_IP);
+                if (newIp && newIp !== ESP_IP) {
+                    localStorage.setItem('esp32_ip', newIp);
+                    location.reload();
+                }
+            };
         });
     </script>
 </body>
